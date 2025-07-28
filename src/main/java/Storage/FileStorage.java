@@ -1,6 +1,8 @@
 package Storage;
 
+import Entities.Admin;
 import Entities.Book;
+import Entities.RegularUser;
 import Entities.User;
 import Utilites.Search;
 import Utilites.Services;
@@ -126,6 +128,8 @@ public final class FileStorage implements DataStorage , RegUserView{  // to prev
                 if (user.getName().equals(name) && role.equals(user.getRole()))
                     return user;
             }
+            if(users.isEmpty() && role.equals(UserRole.ADMIN))
+                return new Admin((DataStorage)this,userId,name);
             return null;
     }
 
