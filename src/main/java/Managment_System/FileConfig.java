@@ -5,13 +5,14 @@ import Storage.DatabaseStorage;
 import Storage.FileStorage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class FileConfig {
         public static DataStorage readConfig() {
         Properties props = new Properties();
 
-        try (FileInputStream input = new FileInputStream("config.properties")) {
+        try (InputStream input = FileConfig.class.getClassLoader().getResourceAsStream("config.properties")) {
             props.load(input);
         } catch (IOException e) {
             System.out.println("Failed to load configuration: " + e.getMessage());
