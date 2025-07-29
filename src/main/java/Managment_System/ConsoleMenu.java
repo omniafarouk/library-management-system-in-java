@@ -122,21 +122,20 @@ public class ConsoleMenu {
                 }
                 case "3" -> {
                     Boolean flag = true;
-                    Book book = null;
-                    while (flag){
-                        System.out.println("\n1) Enter Book Id to be updated:");
-                        String res = stdin.nextLine().trim();
+                    System.out.println("\n1) Enter Book Id to be updated:");
+                    String res = stdin.nextLine().trim();
 
-                        Map<String,Book> booksMap = storage.getAllBooks();
+                    Map<String,Book> booksMap = storage.getAllBooks();
 
-                        List<Book> booksList = new ArrayList<>(booksMap.values());
-                        Search<Book> searchBooks = new Search<>(booksList); 
-                        book = searchBooks.searchById(res);             // implemented searching by ID here
-
-                        if (book == null) {
+                    List<Book> booksList = new ArrayList<>(booksMap.values());
+                    Search<Book> searchBooks = new Search<>(booksList); 
+                    Book book = searchBooks.searchById(res);             // implemented searching by ID here
+                    if (book == null) {
                             System.out.println("Book not found.");
-                            continue;
+                            flag = false;
                         }
+
+                    while (flag){
 
                         System.out.println("\nField to be updated:");
                         System.out.println("\n1) Title");

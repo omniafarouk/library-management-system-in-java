@@ -80,7 +80,7 @@ public class DatabaseStorage implements DataStorage,RegUserView{
                           B.author AS bookAuthor,
                           B.genre As bookGenre,
                           B.avaliableCopies AS bookCopies
-                          from borrowedBooks as BB join Books as B 
+                          from BorrowedBooks as BB join Books as B 
                           on BB.bookId = B.id where userId = ?;""";   
          
            try(Connection conn = DriverManager.getConnection(db_URL, db_username, db_password);
@@ -111,7 +111,7 @@ public class DatabaseStorage implements DataStorage,RegUserView{
     }
     
     public Boolean StoreBorrowedBooks(Map<String,Book> borrowedBooks, String userId){
-            String sql ="insert into borrowedbooks(bookId,userId) values (?,?)";
+            String sql ="insert into BorrowedBooks(bookId,userId) values (?,?)";
             try(Connection conn = DriverManager.getConnection(db_URL, db_username, db_password);
                 PreparedStatement stmt = conn.prepareStatement(sql)
                 ){
@@ -261,7 +261,7 @@ public class DatabaseStorage implements DataStorage,RegUserView{
     @Override
     public void addUser(User user) {
             if(!this.UserExists(user.getId())){ // borrowed books must be different table
-                String sql = "Insert into users(id,name,role) VALUES (?,?,?);";
+                String sql = "Insert into Users(id,name,role) VALUES (?,?,?);";
                 try(Connection conn = DriverManager.getConnection(db_URL, db_username, db_password);
                         PreparedStatement stmt = conn.prepareStatement(sql);
                     ){
