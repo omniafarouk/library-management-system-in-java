@@ -91,7 +91,7 @@ public class DatabaseStorage implements DataStorage,RegUserView{
                ResultSet rs = stmt.executeQuery();
                Map<String,Book> borrowedBooks = new HashMap<>();
                
-               if(rs.next()){
+               while(rs.next()){
                    String bookId = rs.getString("BookId");                
                    String title = rs.getString("bookTitle");
                    String author = rs.getString("bookAuthor");
@@ -111,26 +111,30 @@ public class DatabaseStorage implements DataStorage,RegUserView{
     }
     
     public Boolean StoreBorrowedBooks(Map<String,Book> borrowedBooks, String userId){
-            String sql ="insert into BorrowedBooks(bookId,userId) values (?,?)";
-            try(Connection conn = DriverManager.getConnection(db_URL, db_username, db_password);
-                PreparedStatement stmt = conn.prepareStatement(sql)
-                ){
-                int count=0;
+            String sql = """
+                INSERT INTO BorrowedBooks (bookId, userId)
+                SELECT ?, ?
+                WHERE NOT EXISTS (
+                    SELECT 1 FROM BorrowedBooks WHERE bookId = ? AND userId = ?
+                )
+            """;
+            try(Connection conn = DriverManager.getConnection(db_URL, db_username, db_password)){
                 for(Book book : borrowedBooks.values()) {
-                    stmt.setString(1,book.getId());
-                    stmt.setString(2,userId);
-                    int rs = stmt.executeUpdate();
-                    if(rs > 0) count += 1; 
-                    
-                }
-                conn.close();
-               if(count == borrowedBooks.size()){
-                   System.out.println( userId +" Borrowed Books added successfully");
-                   return true;
-               }else{
-                   System.out.println("Count != Borrowed Books data , something Wrong !!");
-               }
-               
+                    try(PreparedStatement stmt = conn.prepareStatement(sql))
+                    {    
+                        stmt.setString(1,book.getId());
+                        stmt.setString(2,userId);
+                        stmt.setString(3,book.getId());
+                        stmt.setString(4,userId);
+                        stmt.executeUpdate();
+
+                    }
+                    catch(SQLException e){
+                        System.out.println("Storing BorrowedBooks failed while inserting" + book.getId() + " : " + e.getMessage());
+                        return false;
+                    }}
+                System.out.println("User Borrowed Books were added successfully");
+                return true;
             }
             catch(SQLException e){
                System.out.println("\nStoring BorrowedBooks failed : something wrong happened in SQL"+ e.getMessage());
