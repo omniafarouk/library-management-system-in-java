@@ -18,8 +18,11 @@ import java.util.Map;
 
 public final class FileStorage implements DataStorage , RegUserView{  // to prevent taking child from class that can caue problem of the current constructor
 
-    private final String BOOKFILE = "books.dat";
-    private final String USERFILE = "users.dat";
+    //private final String BOOKFILE = "books.dat";
+    //private final String USERFILE = "users.dat";
+    
+    private final String BOOKFILE = System.getenv("BOOKS_FILE");
+    private final String USERFILE = System.getenv("USERS_FILE");
     
     private Map<String , Book> books = new HashMap<>(); 
     private Map<String , User> users = new HashMap<>(); 

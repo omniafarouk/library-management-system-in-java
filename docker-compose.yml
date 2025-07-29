@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+    app:
+      build: .    # refers to dockerfile which is placed in the same directory
+      depends_on: 
+        - mysql_db
+      environment:
+        STORAGE_TYPE: ${STORAGE_TYPE}
+        USER_FILE: ${USER_FILE}
+        BOOKS_FILE: ${BOOKS_FILE}
+        DB_HOST: ${DB_HOST}
+        DB_PORT: ${DB_PORT}
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PASSWORD: ${DB_PASSWORD}
+      stdin_open: true    # for standard input
+      tty: true         # for terminal behaviour (console)
+
+
+    mysql_db:
+      image: mysql:8
+      environment:
+        MYSQL_DATABASE: ${DB_NAME}
+        MYSQL_USER: ${DB_USER}
+        MYSQL_PASSWORD: ${DB_PASSWORD}
+        MYSQL_ROOT_PASSWORD: password
+      ports:
+        - "3306:3306"
+      volumes:
+        - mysql_data:/var/lib/mysql
+
+    
+    adminer:
+      image: adminer
+      ports:
+        - "8080:8080"
+      environment:
+        ADMINER_DEFAULT_SERVER: mysql_db
+      
+      
+volumes:
+  mysql_data:

@@ -1,4 +1,5 @@
 Storage\RegUserView.class
+Utilites\UserRole.class
 Entities\Admin.class
 Entities\RegularUser.class
 Utilites\Search.class
@@ -11,5 +12,6 @@ Utilites\Borrowable.class
 Entities\Book.class
 Managment_System\ConsoleMenu.class
 Storage\DatabaseStorage.class
+Utilites\Services.class
 Managment_System\FileConfig.class
 Storage\FileStorage.class
