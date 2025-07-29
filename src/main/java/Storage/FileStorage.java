@@ -88,6 +88,8 @@ public final class FileStorage implements DataStorage , RegUserView{  // to prev
             books = Services.sortBookByComparator(books);
             System.out.println("Book Added Successfully");
         }
+        else
+            System.out.println("Id already exits");
     }
 
     @Override
@@ -109,6 +111,8 @@ public final class FileStorage implements DataStorage , RegUserView{  // to prev
             users.put(user.getId(),user);
             System.out.println("User Added Successfully");
         }
+        else
+            System.out.println("Id already exits");
     }
 
     @Override
@@ -128,8 +132,11 @@ public final class FileStorage implements DataStorage , RegUserView{  // to prev
                 if (user.getName().equals(name) && role.equals(user.getRole()))
                     return user;
             }
-            if(users.isEmpty() && role.equals(UserRole.ADMIN))
-                return new Admin((DataStorage)this,userId,name);
+            if(users.isEmpty() && role.equals(UserRole.ADMIN)){
+                Admin admin = new Admin((DataStorage)this,userId,name);
+                users.put(userId, admin);
+                return admin;
+            }
             return null;
     }
 

@@ -56,6 +56,8 @@ public class ConsoleMenu {
                 System.out.println("=== Welcome " + name + " ===");
                 this.adminMenu(admin);
             }
+            else
+                System.out.println("\nwrong login credentials");
         }
         else
         {
