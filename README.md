@@ -21,8 +21,8 @@ The project database depends on 2 different setup of the data storage
 
 File storage concept :
 It reads from 2 .dat files (users.dat and books.dat)
-FOR Local deployment (main branch) -> These concepts are applied based on a config.properties file which is read at the very start of the application 
-FOR docker deployment -> The choice is taken from .env file however , the files.dat arenot uploaded to the container , either they are uploaded manually 
+- FOR Local deployment (main branch) -> These concepts are applied based on a config.properties file which is read at the very start of the application 
+- FOR docker deployment -> The choice is taken from .env file however , the files.dat arenot uploaded to the container , either they are uploaded manually 
 or they are saved in the container during runtime
 
 Database Storage concept :
@@ -108,4 +108,40 @@ docker-compose run --rm -it app
 
 ## Troubleshooting Tips:
 
+- To see specfic container problem
+  `docker-compose logs` or `docker-compose <container nane>`
+  - it will show the logs and problems occured if exits , container is either adminer , mysql_db , app
+  `docker-compose ps`
+  - this must show both adminer and mysql_db containers are running , if not check problems and solutions below
 
+- Database not connecting?
+   1) Ensure db is the correct hostname (Docker Compose sets this internally).
+   2) Check that your .env variables match the Docker Compose configuration.
+   3) Confirm that STORAGE_MODE is set to database.
+
+- File-based storage not working?
+  1) Verify that .dat files (users.dat, books.dat) are mounted or accessible inside the container.
+  2) Confirm that STORAGE_MODE is set to file.
+
+- Ports already in use?
+  1) Make sure nothing else is running on ports 3306 (MySQL) or 8080 (Adminer).
+   `netstat -aon | findstr : 3306
+    netstat -aon | findstr : 8080
+   ` 
+
+- Changes not applying?
+  1) Rebuild containers to reflect changes
+`	docker-compose down
+	docker-compose build
+`
+
+- if app container not working correctly
+  1) try rebuilding the jar file of the java project and ensure the path is quivalent to the one in the docker file
+  2) rename the jar file or the docker path if neccessary
+     build using
+     `mvn clean package`
+     if not working correctly , check
+     `mvn -v`
+     if not maven version exists , install it first
+     `sudo apt install maven`
+ 
