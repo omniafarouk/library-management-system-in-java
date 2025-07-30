@@ -62,6 +62,7 @@ Before running the application in a Dockerized setup, ensure the following are i
 
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
+- Creating .env file `see Environment Variables below`
 
 ##  Setup Instructions
 
@@ -73,5 +74,28 @@ docker-compose up -d mysql_db adminer
 docker-compose run --rm -it app
 
 ```
+- This will build all containers
+- start adminer and mysql in the background "detached mode"
+- run app container , the main app , in an interactive user mode in the terminal
+- --rm is to delete the container instance once it stopped ,preferred for clean closeup
+  
+
+## Environment Variables
+- A file must be created before building anything to set uo the environment variables the project needed , otherwise it will give an error.
+
+| Variable       | Description                                                     |
+| -------------- | ----------------------------------------------------------------|
+| `DB_HOST`      | MySQL container hostname (typically `db`)                       |
+| `DB_PORT`      | MySQL exposed port (default: `3306`)                            |
+| `DB_NAME`      | Name of the database used by the application                    |
+| `DB_USER`      | Username for MySQL connection                                   |
+| `DB_PASSWORD`  | Password for the database user                          	   |
+| `STORAGE_MODE` | Mode of data storage: `database` for MySQL or `file` for .dat   | 
+| `USERS_FILE`   | Users filename, To save serialization into if `file` was chosen |
+| `BOOKS_FILE`   | Books filename, To save serialization into if `file` was chosen |
 
 
+## Access Instrusctions:
+- Once containers are built , adminer is accessed using `localhost:8080` from any browser
+- when `localhost:8080` starts , it will display window to enter MYSQL login requirements
+  > log the same info from the .env file to login successfully
