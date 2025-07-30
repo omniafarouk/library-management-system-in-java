@@ -4,13 +4,13 @@
 - The project implements docker for containerization and deploying the application in an isolated setted environment
 
 Tech Stack used :
-Language: Java
-Database: MySQL
-Database Connectivity: JDBC
-Build Tool: (Maven), i personally used netbeans to handle the maven environment to build java.jar that is used in the docker image
-Environment: 
-  - Can run locally (the main branch)
-  - inside Docker containers (the docker branch)
+- Language: Java
+- Database: MySQL
+- Database Connectivity: JDBC
+- Build Tool: (Maven), i personally used netbeans to handle the maven environment to build java.jar that is used in the docker image
+- Environment: 
+   - Can run locally (the main branch)
+   - inside Docker containers (the docker branch)
 
 
 Data Storage Options:
@@ -78,7 +78,7 @@ docker-compose run --rm -it app
 - start adminer and mysql in the background "detached mode"
 - run app container , the main app , in an interactive user mode in the terminal
 - --rm is to delete the container instance once it stopped ,preferred for clean closeup
-  
+- `see Access Instructions Below` 
 
 ## Environment Variables
 - A file must be created before building anything to set uo the environment variables the project needed , otherwise it will give an error.
@@ -99,3 +99,13 @@ docker-compose run --rm -it app
 - Once containers are built , adminer is accessed using `localhost:8080` from any browser
 - when `localhost:8080` starts , it will display window to enter MYSQL login requirements
   > log the same info from the .env file to login successfully
+- If the login was for the first time , create a database
+  1) with the same database name in the .env
+  2) create all the tables in the schema above
+  3) insert one user to be the first in the database , which has the access to register users later (other admins or regular users)
+     otherwise , when app container runs , the application will not be able to login as admins or regular users as the project contain authentican required of the "user id and name "
+     - Insertion example : `insert into Users(id,name,role) Values ("admin1","admin",'admin')`
+
+## Troubleshooting Tips:
+
+
